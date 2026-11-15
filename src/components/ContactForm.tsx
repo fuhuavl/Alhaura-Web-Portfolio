@@ -14,6 +14,7 @@ const field =
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [sender, setSender] = useState("");
+  const [detail, setDetail] = useState("");
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,6 +22,7 @@ export function ContactForm() {
     const data = new FormData(form);
     setSender(String(data.get("name") ?? ""));
     setStatus("sending");
+    setDetail("");
     try {
       const res = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
         method: "POST",
@@ -32,9 +34,16 @@ export function ContactForm() {
         setStatus("success");
         form.reset();
       } else {
+        setDetail(
+          typeof json?.message === "string"
+            ? json.message
+            : `The mail service answered with status ${res.status}.`,
+        );
         setStatus("error");
       }
-    } catch {
+    } catch (err) {
+      console.error("Contact form request failed:", err);
+      setDetail("The mail service could not be reached from this browser.");
       setStatus("error");
     }
   }
@@ -125,8 +134,8 @@ export function ContactForm() {
                 {status === "sending" ? "Sending…" : "Send message"}
               </Button>
               {status === "error" ? (
-                <p role="alert" className="text-sm">
-                  The message could not be sent. Check your connection and try again.
+                <p role="alert" className="max-w-[40ch] text-sm">
+                  The message could not be sent. {detail}
                 </p>
               ) : null}
             </div>
