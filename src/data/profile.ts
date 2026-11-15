@@ -5,8 +5,9 @@ export const profile = {
   location: "Surabaya, Indonesia",
   intro:
     "Building meaningful digital experiences through software engineering, design, and collaboration.",
-  // Receives contact form messages. It is not shown anywhere on the page.
-  email: "uni.alhaura@gmail.com",
+  // Web3Forms public access key. Messages from the contact form are delivered to the
+  // inbox this key was created for. The email address itself is not stored in the site.
+  web3formsKey: "2a43e25b-2107-4eef-83b0-0876d1423675",
   // An empty href renders as a "coming soon" placeholder.
   socials: [
     { label: "LinkedIn", href: "https://id.linkedin.com/in/alhauraharsanto" },

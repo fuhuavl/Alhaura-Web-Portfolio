@@ -24,13 +24,13 @@ export function ContactForm() {
     setStatus("sending");
     setDetail("");
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { Accept: "application/json" },
         body: data,
       });
       const json = await res.json().catch(() => null);
-      if (res.ok && json?.success !== "false" && json?.success !== false) {
+      if (res.ok && json?.success === true) {
         setStatus("success");
         form.reset();
       } else {
@@ -81,12 +81,12 @@ export function ContactForm() {
             transition={{ duration: 0.4 }}
             className="space-y-8"
           >
-            <input type="hidden" name="_subject" value="New message from your portfolio" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="access_key" value={profile.web3formsKey} />
+            <input type="hidden" name="subject" value="New message from your portfolio" />
+            <input type="hidden" name="from_name" value="Portfolio contact form" />
             <input
-              type="text"
-              name="_honey"
+              type="checkbox"
+              name="botcheck"
               tabIndex={-1}
               autoComplete="off"
               aria-hidden

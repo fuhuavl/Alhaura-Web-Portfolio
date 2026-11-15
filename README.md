@@ -30,7 +30,7 @@ LinkedIn and GitHub URLs are in `profile.ts` (`socials`). An empty value shows a
 
 ## Contact form
 
-The form posts to [FormSubmit](https://formsubmit.co) and forwards messages to the email in `profile.ts`. The first message ever sent triggers a one-time activation email to that inbox: click the confirm link in it, then every later message arrives normally. Check spam if it does not show up.
+The form posts to [Web3Forms](https://web3forms.com) using the public access key in `profile.ts` (`web3formsKey`). Messages are delivered to the inbox the key was created for. No activation step is needed.
 
 ## Palette
 
