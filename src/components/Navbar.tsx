@@ -8,8 +8,16 @@ import { profile } from "@/data/profile";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { ease } from "./motion";
 
-export function Navbar() {
-  const active = useActiveSection(navIds);
+type Page = "home" | "projects";
+
+export function Navbar({ page = "home" }: { page?: Page }) {
+  const observed = useActiveSection(navIds);
+  const active = page === "projects" ? "projects" : observed;
+  // On other pages the section links must point back to the home page.
+  const hrefFor = (id: string) => {
+    if (page === "projects" && id === "projects") return "/projects";
+    return page === "home" ? `#${id}` : `/#${id}`;
+  };
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { scrollYProgress } = useScroll();
@@ -50,7 +58,7 @@ export function Navbar() {
           }`}
         >
           <a
-            href="#home"
+            href={hrefFor("home")}
             className="font-display text-xl text-mist"
             onClick={() => setOpen(false)}
           >
@@ -63,7 +71,7 @@ export function Navbar() {
               return (
                 <li key={item.id}>
                   <a
-                    href={`#${item.id}`}
+                    href={hrefFor(item.id)}
                     aria-current={isActive ? "true" : undefined}
                     className={`relative block rounded-full px-4 py-2 text-sm transition-colors duration-300 ${
                       isActive ? "text-mist" : "text-mist/60 hover:text-mist"
@@ -123,7 +131,7 @@ export function Navbar() {
                   transition={{ duration: 0.6, delay: 0.2 + i * 0.06, ease }}
                 >
                   <a
-                    href={`#${item.id}`}
+                    href={hrefFor(item.id)}
                     onClick={() => setOpen(false)}
                     aria-current={active === item.id ? "true" : undefined}
                     className={`block py-2 font-display text-[2.4rem] leading-tight transition-colors ${

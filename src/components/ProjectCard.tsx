@@ -11,8 +11,9 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <motion.article
       {...revealProps(0, 32)}
+      id={project.id}
       aria-labelledby={`${project.id}-title`}
-      className="border-t border-mist/20 py-14 md:py-20"
+      className="scroll-mt-24 border-t border-mist/20 py-14 md:py-20"
     >
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
         <header className="lg:col-span-5">

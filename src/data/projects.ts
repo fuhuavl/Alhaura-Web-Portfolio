@@ -305,9 +305,3 @@ export const projects: Project[] = [
     ]),
   },
 ];
-
-/**
- * Where the "View Projects" button should go. Leave empty to scroll to the
- * project list on this page.
- */
-export const projectsUrl = "";

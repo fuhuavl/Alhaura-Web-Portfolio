@@ -1,105 +1,81 @@
 "use client";
 
-import { useRef, useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { projects, projectsUrl } from "@/data/projects";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { projects } from "@/data/projects";
 import { Section } from "./Section";
 import { Button } from "./Button";
-import { ProjectCard } from "./ProjectCard";
-import { Reveal, SplitText, ease } from "./motion";
+import { Reveal, SplitText, revealProps } from "./motion";
 
+/** Home page preview: one picture per project, each at its real proportions. */
 export function Projects() {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const [notice, setNotice] = useState(false);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const slow = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [30, -30]);
-  const fast = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [-20, 60]);
-
   const hasProjects = projects.length > 0;
 
   return (
     <Section id="projects" tone="slate">
-      <div ref={ref}>
-        <SplitText
-          text="Projects"
-          className="font-display text-[clamp(3.5rem,17vw,14rem)] leading-[0.9] tracking-[-0.02em]"
-        />
+      <SplitText
+        text="Projects"
+        className="font-display text-[clamp(3.5rem,17vw,14rem)] leading-[0.9] tracking-[-0.02em]"
+      />
 
-        <div className="mt-14 grid gap-8 lg:mt-20 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-5">
-            <Reveal>
-              <p className="max-w-[34ch] text-xl leading-relaxed text-mist/85">
-                {hasProjects
-                  ? `${projects.length} projects across games, backend systems, and full-stack web apps.`
-                  : "Projects will be added here once they are ready."}
-              </p>
-            </Reveal>
+      <div className="mt-14 grid gap-8 lg:mt-20 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-5">
+          <Reveal>
+            <p className="max-w-[34ch] text-xl leading-relaxed text-mist/85">
+              {hasProjects
+                ? `${projects.length} projects across games, backend systems, and full-stack web apps.`
+                : "Projects will be added here once they are ready."}
+            </p>
+          </Reveal>
+          {hasProjects ? (
             <Reveal delay={0.12} className="mt-8">
-              {projectsUrl ? (
-                <Button href={projectsUrl} variant="sand">
-                  View Projects
-                </Button>
-              ) : hasProjects ? (
-                <Button href="#project-list" variant="sand">
-                  View Projects
-                </Button>
-              ) : (
-                <Button variant="sand" onClick={() => setNotice(true)}>
-                  View Projects
-                </Button>
-              )}
+              <Button href="/projects" variant="sand">
+                View Projects
+              </Button>
             </Reveal>
-            <div aria-live="polite" className="mt-5 min-h-[1.5rem]">
-              <AnimatePresence>
-                {notice ? (
-                  <motion.p
-                    key="notice"
-                    role="status"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, ease }}
-                    className="text-sm text-sand"
-                  >
-                    No projects are published yet. Check back soon.
-                  </motion.p>
-                ) : null}
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {!hasProjects ? (
-            <div aria-hidden className="grid grid-cols-2 gap-4 md:gap-6 lg:col-span-7">
-              <motion.div
-                style={{ y: slow }}
-                className="hatch aspect-[4/5] border border-dashed border-mist/25"
-              />
-              <motion.div
-                style={{ y: fast }}
-                className="hatch mt-12 aspect-[4/5] border border-dashed border-mist/25"
-              />
-            </div>
           ) : null}
         </div>
-
-        {hasProjects ? (
-          <div id="project-list" className="mt-16 scroll-mt-24 md:mt-24">
-            {projects.map((p) => (
-              <ProjectCard key={p.id} project={p} />
-            ))}
-          </div>
-        ) : null}
       </div>
+
+      {hasProjects ? (
+        <ul
+          aria-label="Project previews"
+          className="-mx-5 mt-14 flex snap-x gap-3 overflow-x-auto px-5 pb-4 [scrollbar-color:#6A6969_transparent] [scrollbar-width:thin] sm:-mx-8 sm:px-8 md:mt-20 md:gap-4 lg:mx-0 lg:px-0"
+        >
+          {projects.map((project, i) => {
+            const cover = project.images[0];
+            return (
+              <motion.li
+                key={project.id}
+                {...revealProps(Math.min(i, 4) * 0.08, 24)}
+                className="shrink-0 snap-start"
+              >
+                <Link
+                  href={`/projects#${project.id}`}
+                  className="group block"
+                  aria-label={`${project.title}, view project`}
+                >
+                  <span className="block overflow-hidden bg-pine/30">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={cover.src}
+                      alt=""
+                      width={cover.width}
+                      height={cover.height}
+                      loading="lazy"
+                      decoding="async"
+                      className="block h-[170px] w-auto max-w-none transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:h-[210px] md:h-[250px]"
+                    />
+                  </span>
+                  <span className="mt-3 block max-w-[22ch] font-display text-lg leading-snug transition-colors duration-300 group-hover:text-sand">
+                    {project.title}
+                  </span>
+                </Link>
+              </motion.li>
+            );
+          })}
+        </ul>
+      ) : null}
     </Section>
   );
 }
