@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --focus: #b3a394;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  background: #081710;
+  overflow-x: clip;
+}
+
+body {
+  @apply bg-pine font-body text-mist antialiased;
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #b3a394;
+  color: #081710;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Sections on a sand background need a dark focus ring */
+.tone-sand {
+  --focus: #081710;
+}
+.tone-mist {
+  --focus: #314352;
+}
+
+.hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 10px,
+    rgba(220, 227, 232, 0.05) 10px 11px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
