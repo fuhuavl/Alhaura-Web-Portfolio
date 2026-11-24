@@ -70,7 +70,7 @@ function HeroArt() {
       <Smiley className="absolute bottom-[10%] left-[8%] w-[26%] rotate-12 animate-bob text-mint [animation-delay:-2s]" />
       <div className="absolute right-[2%] top-[2%] w-[34%] animate-spin-slow">
         <CircleText
-          text="fullstack ✶ ui/ux ✶ curious ✶ "
+          text="software engineering ✶ "
           className="h-full w-full text-cream"
         />
       </div>
@@ -198,9 +198,7 @@ export function Hero() {
                   {profile.location}
                 </p>
               </div>
-              <p className="max-w-[44ch] text-lg leading-relaxed text-ink/85 md:col-span-5 md:text-xl">
-                {profile.intro}
-              </p>
+              <div aria-hidden className="hidden md:col-span-5 md:block" />
               <div className="flex flex-wrap gap-4 md:col-span-3 md:flex-col md:items-end">
                 <Button href="#experience" variant="tomato">
                   Explore My Work

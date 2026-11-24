@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useScroll } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navItems, navIds } from "@/data/nav";
 import { profile } from "@/data/profile";
@@ -25,6 +31,9 @@ export function Navbar({ page = "home" }: { page?: Page }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { scrollYProgress } = useScroll();
+  const reduce = useReducedMotion();
+  // The logo sparkle spins as the page scrolls.
+  const logoRotate = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, 720]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -65,11 +74,13 @@ export function Navbar({ page = "home" }: { page?: Page }) {
         >
           <a
             href={hrefFor("home")}
-            className="group flex items-center gap-2 rounded-full pl-1 pr-3 font-display text-xl font-extrabold tracking-tight text-ink"
+            aria-label="Alhaura, home"
+            className="group flex items-center rounded-full p-1 text-ink"
             onClick={() => setOpen(false)}
           >
-            <Sparkle className="h-7 w-7 text-sun transition-transform duration-700 group-hover:rotate-[180deg] group-hover:scale-110" />
-            Alhaura
+            <motion.span aria-hidden style={{ rotate: logoRotate }} className="block">
+              <Sparkle className="h-7 w-7 text-sun transition-transform duration-700 group-hover:rotate-[180deg] group-hover:scale-110" />
+            </motion.span>
           </a>
 
           <ul className="hidden items-center gap-1 lg:flex">

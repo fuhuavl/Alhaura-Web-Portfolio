@@ -25,7 +25,7 @@ export function Contact() {
     >
       <div className="relative">
         <SplitText
-          text="Let's build something meaningful."
+          text="Let's get to know each other better!"
           className="max-w-[15ch] font-display text-[clamp(2.75rem,9vw,8.5rem)] font-extrabold leading-[0.92] tracking-[-0.045em]"
         />
         <Squiggle className="mt-3 h-6 w-48 text-tomato md:h-8 md:w-80" />
