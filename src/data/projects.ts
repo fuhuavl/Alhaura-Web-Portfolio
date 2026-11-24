@@ -13,7 +13,8 @@ export type Project = {
   overview?: string;
   features: { label: string; text: string }[];
   stack: { label: string; value: string }[];
-  repo: string;
+  /** Optional. Leave it out and the GitHub button is hidden. */
+  repo?: string;
   images: ProjectImage[];
 };
 
@@ -34,6 +35,49 @@ const imgs = (
  * entry below with each picture's real width and height in pixels.
  */
 export const projects: Project[] = [
+  {
+    id: "belajar-mandarin",
+    title: "Belajar Mandarin",
+    tagline:
+      "A web-based interactive Mandarin learning application designed to help children aged 5–10 learn Chinese characters (Hanzi) and everyday vocabulary through engaging learning activities.",
+    overview:
+      "Served as the Project Manager in a team of 5 members, overseeing project planning, task distribution, sprint coordination, progress tracking, and team collaboration throughout the Agile development process.",
+    features: [
+      {
+        label: "Premise",
+        text: "Designed to make learning Mandarin easier and more enjoyable for young learners through colorful visuals, interactive flashcards, and thematic quizzes. The application focuses on building vocabulary recognition, pronunciation, and basic Hanzi writing skills through a structured learning experience.",
+      },
+      {
+        label: "Vocabulary Flashcards",
+        text: "Interactive flip cards displaying Hanzi characters, Pinyin pronunciation, and audio playback. Vocabulary is organized progressively into everyday themes such as family, numbers, colors, animals, and food.",
+      },
+      {
+        label: "Hanzi Writing",
+        text: "An interactive writing feature that guides children through Hanzi stroke order using animated writing demonstrations and on-screen tracing. Provides immediate feedback to help learners practice the correct stroke sequence.",
+      },
+      {
+        label: "Thematic Quiz Roadmap",
+        text: "A structured learning journey divided into progressive thematic levels. Each level begins with vocabulary flashcards before moving into interactive quizzes to reinforce what children have learned.",
+      },
+      {
+        label: "Interactive quiz types",
+        text: "Fill-in-the-blank questions; matching vocabulary with corresponding images; identifying words or images based on audio; arranging words according to the audio sequence.",
+      },
+      {
+        label: "Core systems",
+        text: "User authentication (Login/Sign Up) to maintain individual learning progress, thematic learning progression, interactive vocabulary cards, Hanzi stroke-order practice, audio-based exercises, and a star reward system that motivates children by awarding stars for correct answers.",
+      },
+    ],
+    stack: [{ label: "Target platform", value: "Web application" }],
+    images: imgs("belajar-mandarin", "Belajar Mandarin", [
+      ["bm1.jpeg", 1600, 860],
+      ["bm2.jpeg", 966, 998],
+      ["bm3.jpeg", 1397, 995],
+      ["bm4.jpeg", 657, 1158],
+      ["bm5.jpeg", 667, 842],
+      ["bm6.jpeg", 1600, 841],
+    ]),
+  },
   {
     id: "cat-and-bunnies",
     title: "The Cat & The Bunnies' Riddle",

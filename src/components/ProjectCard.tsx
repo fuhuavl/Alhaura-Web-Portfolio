@@ -49,18 +49,20 @@ export function ProjectCard({ project, index = 0 }: { project: Project; index?: 
             <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-ink/85">
               {project.tagline}
             </p>
-            <a
-              href={project.repo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`group mt-7 inline-flex items-center gap-2 rounded-full border-[2.5px] border-ink px-5 py-2.5 font-bold text-ink shadow-pop-sm transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-pop active:translate-y-0.5 active:shadow-none ${a.bg}`}
-            >
-              View on GitHub
-              <ArrowUpRight
-                aria-hidden
-                className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:rotate-45"
-              />
-            </a>
+            {project.repo ? (
+              <a
+                href={project.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group mt-7 inline-flex items-center gap-2 rounded-full border-[2.5px] border-ink px-5 py-2.5 font-bold text-ink shadow-pop-sm transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-pop active:translate-y-0.5 active:shadow-none ${a.bg}`}
+              >
+                View on GitHub
+                <ArrowUpRight
+                  aria-hidden
+                  className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:rotate-45"
+                />
+              </a>
+            ) : null}
           </header>
 
           <div className="lg:col-span-7">
