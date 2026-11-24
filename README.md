@@ -11,7 +11,7 @@ npm run build      # production build
 npm run typecheck
 ```
 
-Fonts (Gloock and Schibsted Grotesk) load through `next/font/google`, so the first build needs internet access.
+Fonts (Bricolage Grotesque, DM Sans and Caveat) load through `next/font/google`, so the first build needs internet access.
 
 ## Updating content
 
@@ -34,4 +34,4 @@ The form posts to [Web3Forms](https://web3forms.com) using the public access key
 
 ## Palette
 
-mist `#DCE3E8`, sand `#B3A394`, ash `#6A6969`, slate `#314352`, pine `#081710` (see `tailwind.config.ts`).
+cream `#FFF4E4`, ink `#1E1633`, tomato `#FF5B3A`, sun `#FFC83D`, mint `#2FD39A`, lilac `#B69CFF`, sky `#57B6FF`, bubble `#FF8FC7` (see `tailwind.config.ts`).

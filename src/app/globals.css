@@ -3,47 +3,76 @@
 @tailwind utilities;
 
 :root {
-  --focus: #b3a394;
+  --focus: #1e1633;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
-  background: #081710;
+  background: #fff4e4;
   overflow-x: clip;
 }
 
 body {
-  @apply bg-pine font-body text-mist antialiased;
+  @apply bg-cream font-body text-ink antialiased;
   overflow-x: clip;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: #b3a394;
-  color: #081710;
+  background: #ffc83d;
+  color: #1e1633;
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus);
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 
-/* Sections on a sand background need a dark focus ring */
-.tone-sand {
-  --focus: #081710;
-}
-.tone-mist {
-  --focus: #314352;
+/* Dark sections need a bright focus ring */
+.tone-ink {
+  --focus: #ffc83d;
 }
 
-.hatch {
-  background-image: repeating-linear-gradient(
-    135deg,
-    transparent 0 10px,
-    rgba(220, 227, 232, 0.05) 10px 11px
-  );
+/* Polka-dot paper texture */
+.dots {
+  background-image: radial-gradient(rgba(30, 22, 51, 0.13) 1.5px, transparent 1.7px);
+  background-size: 24px 24px;
+}
+.dots-light {
+  background-image: radial-gradient(rgba(255, 244, 228, 0.1) 1.5px, transparent 1.7px);
+  background-size: 24px 24px;
+}
+
+@layer components {
+  /* White "sticker" card with a hard offset shadow */
+  .card-pop {
+    @apply rounded-[1.75rem] border-[2.5px] border-ink bg-white text-ink shadow-pop;
+    transition:
+      transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .card-lift:hover {
+    transform: translate(-4px, -4px) rotate(0deg);
+    box-shadow: 10px 10px 0 0 #1e1633;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border-2 border-ink px-3 py-1 text-sm font-semibold text-ink;
+  }
+}
+
+/* Custom cursor: only on devices with a real mouse, only once the script turns it on */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+  html.has-cursor input,
+  html.has-cursor textarea,
+  html.has-cursor select {
+    cursor: text !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

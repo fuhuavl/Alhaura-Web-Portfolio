@@ -1,24 +1,16 @@
-import type { ReactNode } from "react";
+"use client";
+
+import type { PointerEvent, ReactNode } from "react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-type Variant = "sand" | "outline" | "pine";
+type Variant = "tomato" | "sun" | "white" | "ink";
 
-const variants: Record<Variant, { box: string; sweep: string; icon: string }> = {
-  sand: {
-    box: "bg-sand text-pine",
-    sweep: "bg-mist",
-    icon: "bg-pine/10",
-  },
-  outline: {
-    box: "border border-mist/40 text-mist group-hover:text-pine",
-    sweep: "bg-mist",
-    icon: "bg-mist/10",
-  },
-  pine: {
-    box: "bg-pine text-mist",
-    sweep: "bg-slate",
-    icon: "bg-mist/10",
-  },
+const variants: Record<Variant, { box: string; icon: string }> = {
+  tomato: { box: "bg-tomato text-ink", icon: "bg-ink text-cream" },
+  sun: { box: "bg-sun text-ink", icon: "bg-ink text-sun" },
+  white: { box: "bg-white text-ink", icon: "bg-mint text-ink border-2 border-ink" },
+  ink: { box: "bg-ink text-cream", icon: "bg-sun text-ink" },
 };
 
 type Props = {
@@ -31,9 +23,10 @@ type Props = {
   className?: string;
 };
 
+/** Chunky pill button that leans toward the mouse and "presses" when clicked. */
 export function Button({
   children,
-  variant = "sand",
+  variant = "tomato",
   href,
   onClick,
   type = "button",
@@ -41,36 +34,55 @@ export function Button({
   className = "",
 }: Props) {
   const v = variants[variant];
-  const classes = `group relative inline-flex items-center gap-3 overflow-hidden rounded-full py-3 pl-6 pr-3 text-[0.95rem] font-medium transition-colors duration-500 ${v.box} ${className}`;
+  const reduce = useReducedMotion();
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const x = useSpring(mx, { stiffness: 220, damping: 16 });
+  const y = useSpring(my, { stiffness: 220, damping: 16 });
+
+  const onMove = (e: PointerEvent<HTMLSpanElement>) => {
+    if (reduce || e.pointerType !== "mouse" || disabled) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - (r.left + r.width / 2)) * 0.22);
+    my.set((e.clientY - (r.top + r.height / 2)) * 0.3);
+  };
+  const reset = () => {
+    mx.set(0);
+    my.set(0);
+  };
+
+  const classes = `group relative inline-flex items-center gap-3 rounded-full border-[2.5px] border-ink py-2.5 pl-6 pr-2.5 text-[0.98rem] font-bold shadow-pop transition-[transform,box-shadow] duration-200 ease-out hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-pop-lg active:translate-x-1 active:translate-y-1 active:shadow-none disabled:pointer-events-none disabled:opacity-60 ${v.box} ${className}`;
 
   const inner = (
     <>
+      <span className="relative">{children}</span>
       <span
-        aria-hidden
-        className={`absolute inset-0 translate-y-[101%] transition-transform duration-500 ease-out group-hover:translate-y-0 ${v.sweep}`}
-      />
-      <span className="relative z-10">{children}</span>
-      <span
-        className={`relative z-10 grid h-8 w-8 place-items-center rounded-full ${v.icon}`}
+        className={`relative grid h-9 w-9 place-items-center rounded-full transition-transform duration-500 group-hover:rotate-[360deg] ${v.icon}`}
       >
         <ArrowRight
           aria-hidden
-          className="h-4 w-4 -rotate-45 transition-transform duration-500 group-hover:rotate-0"
+          className="h-4 w-4 -rotate-45 transition-transform duration-300 group-hover:rotate-0"
         />
       </span>
     </>
   );
 
-  if (href) {
-    return (
-      <a href={href} className={classes}>
-        {inner}
-      </a>
-    );
-  }
   return (
-    <button type={type} onClick={onClick} disabled={disabled} className={`${classes} disabled:opacity-60`}>
-      {inner}
-    </button>
+    <motion.span
+      style={{ x, y }}
+      onPointerMove={onMove}
+      onPointerLeave={reset}
+      className="inline-block"
+    >
+      {href ? (
+        <a href={href} className={classes}>
+          {inner}
+        </a>
+      ) : (
+        <button type={type} onClick={onClick} disabled={disabled} className={classes}>
+          {inner}
+        </button>
+      )}
+    </motion.span>
   );
 }

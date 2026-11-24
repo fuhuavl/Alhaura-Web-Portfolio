@@ -9,7 +9,7 @@ import { ease } from "./motion";
 type Status = "idle" | "sending" | "success" | "error";
 
 const field =
-  "mt-2 w-full border-0 border-b border-pine/40 bg-transparent pb-3 text-lg text-pine placeholder:text-slate/70 transition-colors duration-300 focus:border-pine focus:outline-none";
+  "mt-2 w-full rounded-xl border-[2.5px] border-ink bg-white px-4 py-3 text-lg font-normal text-ink shadow-pop-sm placeholder:text-ink/50 transition-[transform,box-shadow] duration-200 focus:-translate-y-0.5 focus:shadow-pop focus:outline-none focus:ring-4 focus:ring-tomato/40";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -54,19 +54,19 @@ export function ContactForm() {
         {status === "success" ? (
           <motion.div
             key="done"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 16, scale: 0.94, rotate: -2 }}
+            animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease }}
-            className="border-t border-pine/25 pt-8"
+            className="rounded-2xl border-[2.5px] border-ink bg-mint p-6 shadow-pop md:p-8"
           >
-            <p className="font-display text-3xl leading-tight md:text-4xl">
+            <p className="font-display text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">
               Thank you{sender ? `, ${sender}` : ""}. Your message was sent.
             </p>
             <button
               type="button"
               onClick={() => setStatus("idle")}
-              className="mt-6 text-base underline underline-offset-4"
+              className="mt-6 rounded-full border-2 border-ink bg-white px-4 py-1.5 text-base font-semibold shadow-pop-sm transition-transform hover:-translate-y-0.5"
             >
               Send another message
             </button>
@@ -94,7 +94,7 @@ export function ContactForm() {
             />
 
             <div className="grid gap-8 sm:grid-cols-2">
-              <label className="block text-sm">
+              <label className="block text-sm font-bold">
                 Your name
                 <input
                   type="text"
@@ -105,7 +105,7 @@ export function ContactForm() {
                   className={field}
                 />
               </label>
-              <label className="block text-sm">
+              <label className="block text-sm font-bold">
                 Your email
                 <input
                   type="email"
@@ -118,7 +118,7 @@ export function ContactForm() {
               </label>
             </div>
 
-            <label className="block text-sm">
+            <label className="block text-sm font-bold">
               Message
               <textarea
                 name="message"
@@ -130,11 +130,11 @@ export function ContactForm() {
             </label>
 
             <div className="flex flex-wrap items-center gap-5">
-              <Button type="submit" variant="pine" disabled={status === "sending"}>
+              <Button type="submit" variant="ink" disabled={status === "sending"}>
                 {status === "sending" ? "Sending…" : "Send message"}
               </Button>
               {status === "error" ? (
-                <p role="alert" className="max-w-[40ch] text-sm">
+                <p role="alert" className="max-w-[40ch] rounded-xl border-2 border-ink bg-bubble px-3 py-2 text-sm font-medium">
                   The message could not be sent. {detail}
                 </p>
               ) : null}

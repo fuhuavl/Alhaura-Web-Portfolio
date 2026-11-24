@@ -1,19 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Gloock, Schibsted_Grotesk } from "next/font/google";
+import { Bricolage_Grotesque, DM_Sans, Caveat } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/motion";
+import { Cursor } from "@/components/Cursor";
 import { profile } from "@/data/profile";
 
-const display = Gloock({
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: "400",
   variable: "--font-display",
   display: "swap",
 });
 
-const body = Schibsted_Grotesk({
+const body = DM_Sans({
   subsets: ["latin"],
   variable: "--font-body",
+  display: "swap",
+});
+
+const hand = Caveat({
+  subsets: ["latin"],
+  variable: "--font-hand",
   display: "swap",
 });
 
@@ -24,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#081710",
+  themeColor: "#FFF4E4",
   width: "device-width",
   initialScale: 1,
 };
@@ -33,15 +39,21 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} ${hand.variable}`}
+    >
       <body>
         <a
           href="#main"
-          className="sr-only z-[60] rounded-full bg-sand px-4 py-2 text-pine focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          className="sr-only z-[60] rounded-full border-2 border-ink bg-sun px-4 py-2 font-semibold text-ink shadow-pop-sm focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
           Skip to content
         </a>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Cursor />
+        </Providers>
       </body>
     </html>
   );
